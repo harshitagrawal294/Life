@@ -165,13 +165,14 @@ def PatientDetails(request,patient_id):
 
 
 
-def logout_view(request):
+def Logout(request):
 
-    logout(request)
     username=request.user.username
+    logout(request)
     if(username[0]=='P'):
             utype='patient'
     else:
             utype='doctor'
+            
     error='You are successfully logged out'
     return render(request,'life/{}_login.html'.format(utype),{'error': error})

@@ -13,4 +13,5 @@ urlpatterns = [
     path('login/patient', views.LoginPatient,name='authenticate_patient'),
     path('patient/<str:patient_id>',views.PatientDetails,name='patient_details'),
     path('doctor/<str:doctor_id>',views.DoctorDetails,name='doctor_details'),
+    path('logout/',views.Logout,name='logout')
 ]

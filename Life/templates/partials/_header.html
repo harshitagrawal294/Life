@@ -44,7 +44,7 @@
                {% if user.is_authenticated %}
 
                <li>
-                  <a class="appoint-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                  <a class="appoint-btn" href="{% url 'logout' %}" type="button" aria-haspopup="true" aria-expanded="false">
                   Log Out
                   </a>                
               </li>
