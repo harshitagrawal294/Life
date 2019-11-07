@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
-from .forms import PostForm_Doctor,PostForm_Patient
+from .forms import PostForm_Doctor,PostForm_Patient,Appointment_form
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required,user_passes_test
 
@@ -176,3 +176,21 @@ def Logout(request):
 
     error='You are successfully logged out'
     return render(request,'life/{}_login.html'.format(utype),{'error': error})
+
+
+def PatientDetails(request,patient_id):
+     patient=get_object_or_404(Patient,pk=patient_id)
+     appointments=Appointment.objects.all().filter(pname=patient)    
+     if request.method=='POST':
+                form=Appointment_form(request.POST)
+                if form.is_valid():
+                                post=form.save(commit=False)
+                                obj=Patient.objects.all().filter(pid=request.user.username)
+                                post.pname=obj[0]
+                                post.save()
+                                return redirect('/patient/'+request.user.username)
+                                
+     form=Appointment_form()   
+     return render(request,'life/patient_details.html',{'patient':patient,
+                                                           'appointments':appointments,'form':Appointment_form                    
+                                                        })

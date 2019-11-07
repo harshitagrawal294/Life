@@ -1,5 +1,5 @@
 from django import forms
-from .models import Doctor,Department,Patient
+from .models import Doctor,Department,Patient,Appointment
 class PostForm_Doctor(forms.ModelForm):
         class Meta:
                 model=Doctor
@@ -25,3 +25,8 @@ class PostForm_Patient(forms.ModelForm):
                     'age': forms.NumberInput(attrs={'class':'form-control'}),
                     'past_record': forms.Textarea(attrs={'class':'form-control'})
                 }
+
+class Appointment_form(forms.ModelForm):
+        class Meta:
+                model=Appointment
+                fields=['dname','dtime']
