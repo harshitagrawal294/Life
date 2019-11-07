@@ -40,31 +40,45 @@
               </ul>
 
               <ul class="nav navbar-nav navbar-right">
-               <li><div class="dropdown">
-                    <button class="appoint dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Log in
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <ol class="appoint-nav">
-                            <li class="appoint-list"><a  href="{% url 'authenticate_patient' %}" class="btn">as a Patient</a></li>
-                          <li class="appoint-list"><a  href="{% url 'authenticate_doctor' %}" class="btn"> as a Doctor</a></li>
-                        </ol>
-                    </div>
+
+               {% if user.is_authenticated %}
+
+               <li>
+                  <a class="appoint-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                  Log Out
+                  </a>                
+              </li>
+
+              {% else %}
+
+              <li><div class="dropdown">
+                <button class="appoint dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Log in
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <ol class="appoint-nav">
+                        <li class="appoint-list"><a  href="{% url 'authenticate_patient' %}" class="btn">as a Patient</a></li>
+                      <li class="appoint-list"><a  href="{% url 'authenticate_doctor' %}" class="btn"> as a Doctor</a></li>
+                    </ol>
                 </div>
-                </li>
-                <li><div class="dropdown">
-                    <button class="appoint dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Sign Up 
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <ol  class="appoint-nav">
-                          <li class="appoint-list"><a  href="{% url 'add_patient' %}" class="btn">as a Patient</a></li>
-                        <li class="appoint-list"><a  href="{% url 'add_doctor' %}" class="btn"> as a Doctor</a></li>
-                      </ol>
-                    </div>
-                  
+            </div>
+            </li>
+            <li><div class="dropdown">
+                <button class="appoint dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 Sign Up 
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <ol  class="appoint-nav">
+                      <li class="appoint-list"><a  href="{% url 'add_patient' %}" class="btn">as a Patient</a></li>
+                    <li class="appoint-list"><a  href="{% url 'add_doctor' %}" class="btn"> as a Doctor</a></li>
+                  </ol>
                 </div>
-                </li>
+              
+            </div>
+            </li>
+
+              {% endif %}
+                
               
               
               </ul>

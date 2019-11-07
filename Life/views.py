@@ -9,6 +9,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from .forms import PostForm_Doctor,PostForm_Patient
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required,user_passes_test
+
 # Create your views here.
 
 class DoctorListView(ListView):
@@ -48,14 +51,14 @@ def PostDoctor(request):
                         post=form.save(commit=False)
                         post.eid=eid
                         post.save()
-                        User.objects.create_user(username=eid,password=form.cleaned_data.get('password'))
-                        print(request.POST)
-                        html = "<html><body>It is now</body></html>"
-                        return HttpResponse(html)
+                        username=eid
+                        password=form.cleaned_data.get('password')
+                        User.objects.create_user(username=username,password=password)
+                        user = authenticate(username=username, password=password)
+                        login(request, user)
+                        return redirect('/patient/'+username)
                 else:   
-                        print(form.errors)
-                        html = "<html><body>It nbnjkbhis now</body></html>"
-                        return HttpResponse(html)           
+                        return render(request,'life/doctor_signup.html',{'form':form})        
         else:
                 form=PostForm_Doctor()
                 return render(request,'life/doctor_signup.html',{'form':form})
@@ -80,14 +83,14 @@ def PostPatient(request):
                         post=form.save(commit=False)
                         post.pid=pid
                         post.save()
-                        User.objects.create_user(username=pid,password=form.cleaned_data.get('password'))
-                        print(request.POST)
-                        html = "<html><body>It is now</body></html>"
-                        return HttpResponse(html)
+                        username=pid
+                        password=form.cleaned_data.get('password')
+                        User.objects.create_user(username=username,password=password)
+                        user = authenticate(username=username, password=password)
+                        login(request, user)
+                        return redirect('/patient/'+username)
                 else:   
-                        print(form.errors)
-                        html = "<html><body>It nbnjkbhis now</body></html>"
-                        return HttpResponse(html)           
+                        return render(request,'life/patient_signup.html',{'form':form})     
         else:
                 form=PostForm_Patient()
                 return render(request,'life/patient_signup.html',{'form':form})
@@ -104,6 +107,7 @@ def LoginDoctor(request):
 
                 if user:
                         if user.is_active:
+                                login(request, user)
                                 return redirect('/doctor/'+username)
                         else:   
                                 error= "*Your account was inactive."
@@ -127,6 +131,7 @@ def LoginPatient(request):
 
                 if user:
                         if user.is_active:
+                                login(request, user)
                                 return redirect('/patient/'+username)
                         else:   
                                 error= "*Your account was inactive."
@@ -138,6 +143,8 @@ def LoginPatient(request):
                 error=''
                 return render(request,'life/patient_login.html',{'error': error})
 
+@login_required(login_url='/login/doctor',redirect_field_name=None)
+@user_passes_test(lambda user: user.username[0]=='D',login_url='/login/doctor',redirect_field_name=None)
 def DoctorDetails(request,doctor_id):
      doctor=get_object_or_404(Doctor,pk=doctor_id)
      appointments=Appointment.objects.all().filter(dname=doctor)    
@@ -146,7 +153,8 @@ def DoctorDetails(request,doctor_id):
                                                            'appointments':appointments                     
                                                         })
 
-
+@login_required(login_url='/login/patient',redirect_field_name=None)
+@user_passes_test(lambda user: user.username[0]=='P',login_url='/login/patient',redirect_field_name=None)
 def PatientDetails(request,patient_id):
      patient=get_object_or_404(Patient,pk=patient_id)
      appointments=Appointment.objects.all().filter(pname=patient)    
@@ -154,3 +162,16 @@ def PatientDetails(request,patient_id):
      return render(request,'life/patient_details.html',{'patient':patient,
                                                            'appointments':appointments                     
                                                         })
+
+
+
+def logout_view(request):
+
+    logout(request)
+    username=request.user.username
+    if(username[0]=='P'):
+            utype='patient'
+    else:
+            utype='doctor'
+    error='You are successfully logged out'
+    return render(request,'life/{}_login.html'.format(utype),{'error': error})

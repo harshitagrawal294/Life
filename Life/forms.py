@@ -17,7 +17,7 @@ class PostForm_Doctor(forms.ModelForm):
 class PostForm_Patient(forms.ModelForm):
         class Meta:
                 model=Patient
-                fields=['name','age','past_record','password',]
+                fields=['name','age','past_record','password','picture']
                 widgets = {
                     'name': forms.TextInput(attrs={'placeholder': '*Enter Fullname'}),
                     'password': forms.PasswordInput(attrs={'placeholder': 'Use a strong password', 'size':40}),
