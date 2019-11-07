@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block maincontent %}
+<!--inner banner-->
+<div class="inner-banner">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <h1>Departments</h1>
+      </div>
+      <div class="col-md-5">
+        <ol class="breadcrumb">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="active">Department</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!--inner banner End-->
+
+<!--Main Content Start-->
+<div class="main-content">
+
+  <!--Services Start-->
+  <section class="services">
+    <div class="container">
+      <div class="row">
+        <div class="service-style-1">
+          <div class="row">
+            {% for department in object_list %}
+            <!--service box start-->
+            <div class="col-md-3 col-sm-3">
+              <div class="service-box">
+                <div class="ser-thumb">
+                  <img src="{{ department.picture.url }}" alt=""></div>
+                <div class="ser-content text-center">
+                  <h3><a href="{% url 'department_detail' department.id %}">{{ department.name }}</a></h3>
+                  <p>{{ department.number_of_doc }} specialists</p>
+                </div>
+              </div>
+            </div>
+            <!--service box End-->
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Services End-->
+</div>
+<!--Main Content End-->
+{% endblock maincontent %}
