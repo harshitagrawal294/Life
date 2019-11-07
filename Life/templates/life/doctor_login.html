@@ -20,28 +20,52 @@
 <!--inner banner End-->
 
 <!--Main Content Start-->
-<div class="main-content padding-12">
-  <section class="appointment-form">
-    <div class="container">
-      <div class="row">
-        <div class="form-error">{{ error }}</div>
-        <div class="col-sm-12" >
-          <form action="{% url 'authenticate_doctor' %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="app-form">
-              <div class="col-md-6 col-sm-6">
-                <label for="username">Employee ID:</label>
-                  <input type="text" name="username" placeholder="Username"><br>
-                <label for="password">Password:</label>
-                  <input type="password" name="password" placeholder="Password"><br><br>
-                  <input type="submit" value="login">
-              </div>
-            </div>  
-          </form>
-        </div>
+<section class="appointment-form">
+<div class="container">
+
+{% if error %}
+<div class="alert alert-danger col-sm-5 col-sm-offset-4 m-t-xl p-y-sm">
+    {{ error }}
+</div>
+
+
+{% endif %}
+
+
+<form action="{% url 'authenticate_doctor' %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="app-form">
+
+
+    <div class="form-group row">
+      <label for="username" class="col-sm-1 col-sm-offset-4 col-form-label  p-t-sm">Username:</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="username" placeholder="Username" name="username">
       </div>
     </div>
-  </section>
+
+    <div class="form-group row">
+      <label for="password" class="col-sm-1 col-sm-offset-4 col-form-label  p-t-sm">Password:</label>
+      <div class="col-sm-4">
+        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <div class="col-sm-3 col-sm-offset-5 p-t-lg p-b-lg">
+        <input type="submit" class="btn btn-primary" value='Sign in'></input>
+      </div>
+    </div>
+
+  </div>
+
+
+</form>
 </div>
+</section>
+
+
+
 {% endblock maincontent %}
 <!--Main Content End-->

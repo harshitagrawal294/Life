@@ -56,7 +56,7 @@ def PostDoctor(request):
                         User.objects.create_user(username=username,password=password)
                         user = authenticate(username=username, password=password)
                         login(request, user)
-                        return redirect('/patient/'+username)
+                        return redirect('/doctor/'+username)
                 else:   
                         return render(request,'life/doctor_signup.html',{'form':form})        
         else:
@@ -65,7 +65,7 @@ def PostDoctor(request):
 
 def PostPatient(request):
         if request.method=="POST":
-                form=PostForm_Patient(request.POST)
+                form=PostForm_Patient(request.POST,request.FILES)
                 PIDS= [patient.pid for patient in Patient.objects.all()]
 
                 if(PIDS==[]):
@@ -173,6 +173,6 @@ def Logout(request):
             utype='patient'
     else:
             utype='doctor'
-            
+
     error='You are successfully logged out'
     return render(request,'life/{}_login.html'.format(utype),{'error': error})

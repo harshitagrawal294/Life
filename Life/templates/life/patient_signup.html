@@ -24,13 +24,17 @@
   <section class="appointment-form">
     <div class="container">
       <div class="row">
-        <div class="col-sm-12" >
+        <div class="col-sm-10 col-sm-offset-3" >
           <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="app-form">
               <div class="col-md-6 col-sm-6">
               {{form.as_p}} 
-               <input type="submit" value="save">
+              <div class="form-group row">
+                <div class="col-sm-8 col-sm-offset-4 p-t-lg p-b-lg">
+                  <input type="submit" class="btn btn-primary" value='Sign in'></input>
+                </div>
+              </div>
               </div>
             </div>
           </form>
