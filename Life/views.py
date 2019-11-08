@@ -127,14 +127,23 @@ def DoctorDetails(request,doctor_id):
 def PatientDetails(request,patient_id):
      patient=get_object_or_404(Patient,pk=patient_id)
      appointments=Appointment.objects.all().filter(pname=patient)    
+
+
      if request.method=='POST':
                 form=Appointment_form(request.POST)
-                if form.is_valid():
-                                post=form.save(commit=False)
-                                obj=Patient.objects.all().filter(pid=request.user.username)
-                                post.pname=obj[0]
-                                post.save()
-                                return redirect('/patient/'+request.user.username)
+                
+                doctor_id= request.POST.get('dname')
+                dtime=request.POST.get('dtime')
+                dtime=dtime[:10]+' '+dtime[11:]
+                print(dtime)
+                doctor=get_object_or_404(Doctor,pk=doctor_id)
+
+                appointment= Appointment(dname=doctor,pname=patient,dtime=dtime)
+                appointment.save()
+
+                # print(appointment)
+
+                return redirect('/patient/'+request.user.username)
                                 
      form=Appointment_form()   
      return render(request,'life/patient_details.html',{'patient':patient,

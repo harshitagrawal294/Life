@@ -16,7 +16,7 @@
 <!--Main Content Start-->
 <div class="main-content">
   <div class="team-details">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
 
 
@@ -25,25 +25,41 @@
         </div>
 
 
-        <div class="col-md-5">
-          <div class="doctor-appointments">
-            <h3>Appointments</h3>
+        <div class="col-md-6">
+          <div class="doctor-appointments m-r-md p-b-xl">
+            {% if appointments %}
 
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2">
+                <h3 class>Appointments</h3>
+              </div>
+            </div>
+
+            
             <div class="row appointment-header">
-              <div class="col-md-2">S.No.</div>
-              <div class="col-md-5">Patient</div>
-              <div class="col-md-4">Date</div>
+              <div class="col-md-1">S.No.</div>
+              <div class="col-md-5">Doctor</div>
+              <div class="col-md-3">Date</div>
+              <div class="col-md-3">Time</div>
             </div>
 
             {% for appointment in appointments %}
-      
+            
             <div class="row appointment-item">
-                <div class="col-md-2">{{ forloop.counter }}</div>
-                <div class="col-md-5">{{  appointment.pname.name }}</div>
-                <div class="col-md-4">{{ appointment.dtime.date }}</div>
+                <div class="col-md-1">{{ forloop.counter }}</div>
+                <div class="col-md-5">{{  appointment.dname.name }}</div>
+                <div class="col-md-3">{{ appointment.dtime.date }}</div>
+                <div class="col-md-3">{{ appointment.dtime.time }}</div>
             </div>
           
             {%  endfor %}
+
+            {% else %}
+
+            <h3>No Appointments</h3>
+
+            {% endif %}
+
       
       
       
@@ -59,7 +75,7 @@
       </div>
       <div class="row">
         <div class="col-md-6 col-sm-6">
-          <div class="team-details-text">
+          <div class="team-details-text m-l-xl">
             <div class="sectio-title-2">
               <h2>{{ doctor.name }}</h2>
               <strong>{{ doctor.designation }}-{{ doctor.dept }}</strong></br>
@@ -67,7 +83,7 @@
             </div>
            
             <ul class="team-social">
-              <li><strong>Share :</strong></li>
+              <li><strong>Contact :</strong></li>
               <li><a class="tw" href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
               <li><a class="fb" href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
               <li><a class="gp" href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>

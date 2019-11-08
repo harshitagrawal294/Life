@@ -55,24 +55,32 @@
 
 
 
-  <div class="col-xs-5">
+  <div class="col-xs-6">
     <div class="patients-appointments m-b-xl row">
 
-      {% if appointemnts %}
+      {% if appointments %}
 
-      <h3>Appointments</h3>
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <h3 class>Appointments</h3>
+        </div>
+      </div>
+
+      
       <div class="row appointment-header">
-        <div class="col-md-2">S.No.</div>
+        <div class="col-md-1">S.No.</div>
         <div class="col-md-5">Doctor</div>
-        <div class="col-md-4">Date</div>
+        <div class="col-md-3">Date</div>
+        <div class="col-md-3">Time</div>
       </div>
 
       {% for appointment in appointments %}
       
       <div class="row appointment-item">
-          <div class="col-md-2">{{ forloop.counter }}</div>
+          <div class="col-md-1">{{ forloop.counter }}</div>
           <div class="col-md-5">{{  appointment.dname.name }}</div>
-          <div class="col-md-4">{{ appointment.dtime.date }}</div>
+          <div class="col-md-3">{{ appointment.dtime.date }}</div>
+          <div class="col-md-3">{{ appointment.dtime.time }}</div>
       </div>
     
       {%  endfor %}
@@ -113,7 +121,7 @@
           </h5>
         </div>
         <div class="modal-body">
-        <form method="POST" class="app-form">
+        <form action="{% url 'patient_details' patient.pid %}" method="POST" class="app-form">
           {% csrf_token %}
 
 
