@@ -109,6 +109,11 @@ def LoginUser(request,usertype,msg):
                 return render(request,'life/user_login.html',{'error': error,'usertype':usertype})
 
 
+def Profile(request,id):
+        if(id[0]=='P'):
+                return redirect('/patient/'+id)
+        else:
+                return redirect('/doctor/'+id)
 
 
 @login_required(login_url='/login/doctor/1',redirect_field_name=None)

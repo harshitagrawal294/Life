@@ -13,5 +13,6 @@ urlpatterns = [
     path('login/<str:usertype>/<int:msg>', views.LoginUser,name='authenticate'),
     path('patient/<str:patient_id>',views.PatientDetails,name='patient_details'),
     path('doctor/<str:doctor_id>',views.DoctorDetails,name='doctor_details'),
+    path('profile/<str:id>',views.Profile,name='profile'),
     path('logout/',views.Logout,name='logout')
 ]
