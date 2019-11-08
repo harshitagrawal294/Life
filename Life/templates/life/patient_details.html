@@ -62,7 +62,10 @@
 
 
   <div class="col-xs-5">
-    <div class="patients-appointments m-b-xl">
+    <div class="patients-appointments m-b-xl row">
+
+      {% if appointemnts %}
+
       <h3>Appointments</h3>
       <div class="row appointment-header">
         <div class="col-md-2">S.No.</div>
@@ -80,36 +83,67 @@
     
       {%  endfor %}
 
+      {% else %}
+
+      <h3>No Appointments</h3>
+
+      {% endif %}
+
 
 
     </div>
+
+    <div class="appointment row">
+      <div class="col-md-6 col-md-offset-4">
+        <a type="button" class="btn btn-primary appoint-btn" data-toggle="modal" data-target="#exampleModal">
+          Book an Appointment
+        </a>
+      </div>
+    </div>
+
   </div>
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Appointment
-   </button>
+
+  
+
+</div>
+
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-header m-y-md p-x-md">
+          <h5 class="modal-title p-b-md" id="exampleModalLabel">
+            Select the doctor name and a time that suites you
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </h5>
         </div>
         <div class="modal-body">
-        <form method="POST">
+        <form method="POST" class="app-form">
           {% csrf_token %}
-          {{form.as_p}}
-          <input type="submit" value="save">
+
+
+          {% for field in form %}
+          <div class="form-group">
+              <div class="row">{{ field.errors }}</div>
+              <div class="row">
+                <div class="col-md-3 m-t-sm">{{ field.label_tag }}</div>
+                <div class="col-md-8">{{ field }}</div>
+              </div>
+          </div>
+          {% endfor %}
+
+          <div class="row">
+            <div class="col-md-3 col-md-offset-4">
+              <input type="submit" value="save" class="p-y-sm">
+            </div>
+          </div>
         </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
 
-</div>
+
 <!--Main Content End-->
 {% endblock maincontent %}

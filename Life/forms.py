@@ -30,3 +30,16 @@ class Appointment_form(forms.ModelForm):
         class Meta:
                 model=Appointment
                 fields=['dname','dtime']
+
+                dname=forms.ModelChoiceField(queryset= Doctor.objects.all(),  to_field_name="name",widget=forms.Select(attrs={'class':'form-control'}))
+
+                labels={
+                    'dname':'Doctor',
+                    'dtime': 'Date and Time'
+                }
+
+                widgets = {
+                    'dtime': forms.DateInput(attrs={'class': "form-control",'type': 'datetime-local'}),
+                }
+
+              
