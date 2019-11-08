@@ -48,6 +48,11 @@
                   Log Out
                   </a>                
               </li>
+              <li>
+                <a class="appoint-btn" href="{% url 'patient_details' patient_id=user.username %}" type="button" aria-haspopup="true" aria-expanded="false">
+                Your Profile
+                </a>                
+            </li>
 
               {% else %}
 
