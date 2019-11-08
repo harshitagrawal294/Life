@@ -95,7 +95,7 @@ def PostPatient(request):
                 form=PostForm_Patient()
                 return render(request,'life/patient_signup.html',{'form':form})
 
-def LoginDoctor(request):
+def LoginDoctor(request,msg):
         if request.method == 'POST':
                 username = request.POST.get('username')
                 password = request.POST.get('password')
@@ -117,9 +117,11 @@ def LoginDoctor(request):
                         return render(request,'life/doctor_login.html',{'error': error})
         else:   
                 error=''
+                if(msg==2):
+                        error='You are successfully logged out'
                 return render(request,'life/doctor_login.html',{'error': error})
 
-def LoginPatient(request):
+def LoginPatient(request,msg):
         if request.method == 'POST':
                 username = request.POST.get('username')
                 password = request.POST.get('password')
@@ -141,9 +143,12 @@ def LoginPatient(request):
                         return render(request,'life/patient_login.html',{'error': error})
         else:   
                 error=''
+                if(msg==2):
+                        error='You are successfully logged out'
                 return render(request,'life/patient_login.html',{'error': error})
 
-@login_required(login_url='/login/doctor',redirect_field_name=None)
+
+@login_required(login_url='/login/docto/1r',redirect_field_name=None)
 @user_passes_test(lambda user: user.username[0]=='D',login_url='/login/doctor',redirect_field_name=None)
 def DoctorDetails(request,doctor_id):
      doctor=get_object_or_404(Doctor,pk=doctor_id)
@@ -153,7 +158,7 @@ def DoctorDetails(request,doctor_id):
                                                            'appointments':appointments                     
                                                         })
 
-@login_required(login_url='/login/patient',redirect_field_name=None)
+@login_required(login_url='/login/patient/1',redirect_field_name=None)
 @user_passes_test(lambda user: user.username[0]=='P',login_url='/login/patient',redirect_field_name=None)
 def PatientDetails(request,patient_id):
      patient=get_object_or_404(Patient,pk=patient_id)
@@ -173,6 +178,5 @@ def Logout(request):
             utype='patient'
     else:
             utype='doctor'
-
-    error='You are successfully logged out'
-    return render(request,'life/{}_login.html'.format(utype),{'error': error})
+            
+    return redirect('/login/{}/2'.format(utype))

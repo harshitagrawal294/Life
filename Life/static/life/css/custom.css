@@ -3005,6 +3005,8 @@ body .faqs .collapse {
 .team-detail-img img {
 	position: relative;
 	z-index: 99;
+	height:300px;
+	width:300px;
 }
 
 .team-detail-img:after {

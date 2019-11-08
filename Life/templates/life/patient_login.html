@@ -32,7 +32,7 @@
 {% endif %}
 
 
-<form action="{% url 'authenticate_patient' %}" method="POST" enctype="multipart/form-data">
+<form action="{% url 'authenticate_patient' 1 %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="app-form">
 

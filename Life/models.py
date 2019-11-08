@@ -29,7 +29,7 @@ class Doctor(models.Model):
 
     def __str__(self):
         return self.name
-
+Doctor
 
 class Patient(models.Model):
     name= models.CharField(max_length=200)
