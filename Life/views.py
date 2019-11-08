@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
-from .forms import PostForm_Doctor,PostForm_Patient
+from .forms import PostForm_Doctor,PostForm_Patient,Appointment_form
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required,user_passes_test
 
@@ -158,14 +158,24 @@ def DoctorDetails(request,doctor_id):
                                                            'appointments':appointments                     
                                                         })
 
+
 @login_required(login_url='/login/patient/1',redirect_field_name=None)
 @user_passes_test(lambda user: user.username[0]=='P',login_url='/login/patient',redirect_field_name=None)
 def PatientDetails(request,patient_id):
      patient=get_object_or_404(Patient,pk=patient_id)
      appointments=Appointment.objects.all().filter(pname=patient)    
-
+     if request.method=='POST':
+                form=Appointment_form(request.POST)
+                if form.is_valid():
+                                post=form.save(commit=False)
+                                obj=Patient.objects.all().filter(pid=request.user.username)
+                                post.pname=obj[0]
+                                post.save()
+                                return redirect('/patient/'+request.user.username)
+                                
+     form=Appointment_form()   
      return render(request,'life/patient_details.html',{'patient':patient,
-                                                           'appointments':appointments                     
+                                                           'appointments':appointments,'form':Appointment_form                    
                                                         })
 
 
@@ -178,5 +188,8 @@ def Logout(request):
             utype='patient'
     else:
             utype='doctor'
-            
+
     return redirect('/login/{}/2'.format(utype))
+
+
+
