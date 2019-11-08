@@ -4064,7 +4064,7 @@ body select:focus {
 	font-size:1.8rem;
 	font-weight:400;
 	margin:5px 4px;
-	padding-left: 0px;
+	padding-left: 10px;
 	padding-right:0px;
 	float:left;
 	display: block-inline;
@@ -4144,4 +4144,9 @@ body select:focus {
 
 .site-header .appoint-btn:hover {
     background: #222222 !important;
+}
+
+.patient-image {
+	height:400px;
+	width: 400px;
 }

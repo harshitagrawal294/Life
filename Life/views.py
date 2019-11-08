@@ -31,69 +31,56 @@ def DepartmentDetails(request,dept_id):
                                                            'doctors':doctors                     
                                                         })
 
-def PostDoctor(request):
+def PostUser(request,usertype):
+
         if request.method=="POST":
-                form=PostForm_Doctor(request.POST, request.FILES)
-                EIDS= [doctor.eid for doctor in Doctor.objects.all()]
 
-                if(EIDS==[]):
-                        EID=['D100',]
-
-                last_eid= sorted(EIDS)[len(EIDS)-1]
-                cur_eid= int(last_eid[1:])+1
-
-                if(cur_eid)<9:
-                        eid='D'+ '0'+str(cur_eid)
+                if(usertype=='doctor'):
+                        Model=Doctor
+                        form=PostForm_Doctor(request.POST, request.FILES)
+                        id='D'
                 else:
-                        eid= 'D' +str(cur_eid)
+                        Model=Patient
+                        form=PostForm_Patient(request.POST,request.FILES)
+                        id='P'
+
+
+
+
+                UIDS= [User.pk for User in Model.objects.all()]
+                print(UIDS)
+
+                if(UIDS==[]):
+                        UID=[id+ '100',]
+
+                last_uid= sorted(UIDS)[len(UIDS)-1]
+                cur_uid= int(last_uid[1:])+1
+
+                if(cur_uid)<9:
+                        uid=id+ '0'+str(cur_uid)
+                else:
+                        uid= id +str(cur_uid)
 
                 if form.is_valid():
                         post=form.save(commit=False)
-                        post.eid=eid
+                        post.pk=uid
                         post.save()
-                        username=eid
+                        username=uid
                         password=form.cleaned_data.get('password')
                         User.objects.create_user(username=username,password=password)
                         user = authenticate(username=username, password=password)
                         login(request, user)
-                        return redirect('/doctor/'+username)
+                        return redirect('/{}/'.format(usertype)+username)
                 else:   
-                        return render(request,'life/doctor_signup.html',{'form':form})        
+                        return render(request,'life/user_signup.html',{'form':form})        
         else:
-                form=PostForm_Doctor()
-                return render(request,'life/doctor_signup.html',{'form':form})
 
-def PostPatient(request):
-        if request.method=="POST":
-                form=PostForm_Patient(request.POST,request.FILES)
-                PIDS= [patient.pid for patient in Patient.objects.all()]
-
-                if(PIDS==[]):
-                        PIDS=['P100',]
-
-                last_pid= sorted(PIDS)[len(PIDS)-1]
-                cur_pid= int(last_pid[1:])+1
-
-                if(cur_pid)<9:
-                        pid= 'P'+'0'+str(cur_pid)
+                if(usertype=='doctor'):
+                        form=PostForm_Doctor()
                 else:
-                        pid= 'P'+str(cur_pid)
+                        form=PostForm_Patient()
+                return render(request,'life/user_signup.html',{'form':form})
 
-                if form.is_valid():
-                        post=form.save(commit=False)
-                        post.pid=pid
-                        post.save()
-                        username=pid
-                        password=form.cleaned_data.get('password')
-                        User.objects.create_user(username=username,password=password)
-                        user = authenticate(username=username, password=password)
-                        login(request, user)
-                        return redirect('/patient/'+username)
-                else:   
-                        return render(request,'life/patient_signup.html',{'form':form})     
-        else:
-                form=PostForm_Patient()
-                return render(request,'life/patient_signup.html',{'form':form})
 
 def LoginDoctor(request,msg):
         if request.method == 'POST':

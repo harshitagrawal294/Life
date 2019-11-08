@@ -69,8 +69,8 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <ol  class="appoint-nav">
-                      <li class="appoint-list"><a  href="{% url 'add_patient' %}" class="btn">as a Patient</a></li>
-                    <li class="appoint-list"><a  href="{% url 'add_doctor' %}" class="btn"> as a Doctor</a></li>
+                      <li class="appoint-list"><a  href="{% url 'add_user' 'patient' %}" class="btn">as a Patient</a></li>
+                    <li class="appoint-list"><a  href="{% url 'add_user' 'doctor' %}" class="btn"> as a Doctor</a></li>
                   </ol>
                 </div>
               
