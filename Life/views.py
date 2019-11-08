@@ -82,60 +82,36 @@ def PostUser(request,usertype):
                 return render(request,'life/user_signup.html',{'form':form})
 
 
-def LoginDoctor(request,msg):
+def LoginUser(request,usertype,msg):
         if request.method == 'POST':
                 username = request.POST.get('username')
                 password = request.POST.get('password')
                 user = authenticate(username=username, password=password)
 
-                if(username[0]=='P'):
-                        error= "*Your account was inactive."
-                        return render(request,'life/doctor_login.html',{'error': error})
+                if( username[0] != (usertype[0]).upper() ):
+                        error= "*Invalid Username and/or password"
+                        return render(request,'life/user_login.html',{'error': error,'usertype':usertype})
 
                 if user:
                         if user.is_active:
                                 login(request, user)
-                                return redirect('/doctor/'+username)
+                                return redirect('/{}/'.format(usertype)+username)
                         else:   
                                 error= "*Your account was inactive."
-                                return render(request,'life/doctor_login.html',{'error': error})
+                                return render(request,'life/user_login.html',{'error': error,'usertype':usertype})
                 else:
                         error='*Invalid Username and/or password'
-                        return render(request,'life/doctor_login.html',{'error': error})
+                        return render(request,'life/user_login.html',{'error': error,'usertype':usertype})
         else:   
                 error=''
                 if(msg==2):
                         error='You are successfully logged out'
-                return render(request,'life/doctor_login.html',{'error': error})
-
-def LoginPatient(request,msg):
-        if request.method == 'POST':
-                username = request.POST.get('username')
-                password = request.POST.get('password')
-                user = authenticate(username=username, password=password)
-
-                if(username[0]=='D'):
-                        error= "*Your account was inactive."
-                        return render(request,'life/patient_login.html',{'error': error})
-
-                if user:
-                        if user.is_active:
-                                login(request, user)
-                                return redirect('/patient/'+username)
-                        else:   
-                                error= "*Your account was inactive."
-                                return render(request,'life/patient_login.html',{'error': error})
-                else:
-                        error='*Invalid Username and/or password'
-                        return render(request,'life/patient_login.html',{'error': error})
-        else:   
-                error=''
-                if(msg==2):
-                        error='You are successfully logged out'
-                return render(request,'life/patient_login.html',{'error': error})
+                return render(request,'life/user_login.html',{'error': error,'usertype':usertype})
 
 
-@login_required(login_url='/login/docto/1r',redirect_field_name=None)
+
+
+@login_required(login_url='/login/doctor/1',redirect_field_name=None)
 @user_passes_test(lambda user: user.username[0]=='D',login_url='/login/doctor',redirect_field_name=None)
 def DoctorDetails(request,doctor_id):
      doctor=get_object_or_404(Doctor,pk=doctor_id)
